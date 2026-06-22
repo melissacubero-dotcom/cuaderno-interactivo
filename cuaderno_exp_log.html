@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>Cuaderno Interactivo: Funciones Exponenciales y Logaritmicas</title>
+<style>
+*{-webkit-box-sizing:border-box;box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{font-family:Arial,Helvetica,sans-serif;background:#eef2f7;min-height:100vh;-webkit-overflow-scrolling:touch;overflow-x:hidden}
+button{-webkit-appearance:none;appearance:none;font-family:Arial,Helvetica,sans-serif;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+select,input{font-family:Arial,Helvetica,sans-serif}
+@media(max-width:768px){input,select,textarea{font-size:16px!important}}
+
+#topbar{background:#0033A0;color:#fff;text-align:center;padding:12px 14px 10px}
+.t1{font-size:1.05rem;font-weight:700;margin-bottom:3px;line-height:1.3}
+.t2{font-size:.8rem;margin-bottom:2px}
+.t3{font-size:.8rem;font-weight:700;margin-bottom:2px}
+.t4{font-size:.76rem;font-weight:700}
+.t5{font-size:.76rem}
+.t6{font-size:.67rem;opacity:.7;font-style:italic}
+
+#infobar{background:#00257a;padding:6px 12px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;-webkit-box-align:center;-webkit-align-items:center;align-items:center}
+.ib-item{display:-webkit-inline-box;display:-webkit-inline-flex;display:inline-flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;margin-right:10px;margin-bottom:2px}
+.ib-label{color:#aac4ff;font-size:.76rem;font-weight:700;margin-right:5px}
+.chip{background:#F2A900;color:#0033A0;font-weight:700;font-size:.76rem;padding:2px 10px;border-radius:20px;display:inline-block}
+
+#progbar-wrap{background:#cdd7e8;height:5px}
+#progbar{background:#F2A900;height:5px;width:0%;-webkit-transition:width .4s;transition:width .4s}
+
+#modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.8);z-index:9999;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-overflow-scrolling:touch;overflow-y:auto;padding:16px}
+#modal-box{background:#fff;border-radius:14px;padding:28px 22px;max-width:400px;width:100%;text-align:center;-webkit-box-shadow:0 8px 40px rgba(0,0,0,.35);box-shadow:0 8px 40px rgba(0,0,0,.35)}
+#modal-box .lock{font-size:2.2rem;margin-bottom:10px}
+#modal-box h2{color:#0033A0;font-size:1.1rem;margin-bottom:8px}
+#modal-box p{color:#555;font-size:.84rem;margin-bottom:14px;line-height:1.45}
+#modal-box select,#modal-box input[type="text"]{width:100%;padding:10px 12px;border:2px solid #ccc;border-radius:8px;margin-bottom:12px;outline:none;background:#fff;color:#333;display:block;-webkit-appearance:none;appearance:none}
+#modal-box select:focus,#modal-box input[type="text"]:focus{border-color:#0033A0}
+#modal-btn{background:#0033A0;color:#fff;border-radius:8px;padding:12px 28px;font-size:1rem;width:100%;font-weight:700}
+#modal-btn:active{background:#00257a}
+#modal-warn{color:#c0392b;font-size:.82rem;margin-top:10px;min-height:18px}
+
+#main-menu{padding:22px 14px 40px;display:none}
+#main-menu h2{color:#0033A0;font-size:.98rem;margin-bottom:14px;text-align:center}
+#menu-grid{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;max-width:960px;margin:0 auto}
+.menu-card{background:#fff;border-radius:12px;padding:18px 12px;border-bottom:4px solid #F2A900;-webkit-box-shadow:0 2px 8px rgba(0,0,0,.08);box-shadow:0 2px 8px rgba(0,0,0,.08);text-align:center;cursor:pointer;-webkit-box-flex:1;-webkit-flex:1 1 150px;flex:1 1 150px;min-width:140px;max-width:220px;margin:0 6px 12px;-webkit-transition:-webkit-transform .2s;transition:transform .2s}
+.menu-card:active{-webkit-transform:translateY(-3px);transform:translateY(-3px)}
+@media(min-width:769px){.menu-card:hover{-webkit-transform:translateY(-5px);transform:translateY(-5px);-webkit-box-shadow:0 8px 24px rgba(0,51,160,.15);box-shadow:0 8px 24px rgba(0,51,160,.15)}}
+.menu-card .icon{font-size:1.8rem;margin-bottom:8px;display:block}
+.menu-card .title{color:#0033A0;font-weight:700;font-size:.9rem;margin-bottom:5px}
+.menu-card .desc{color:#777;font-size:.74rem;line-height:1.35}
+.done-badge{color:#27ae60;font-size:.82rem}
+
+#activity-area{display:none;padding-bottom:50px}
+#back-btn{background:#f0f0f0;border:2px solid #0033A0;color:#0033A0;border-radius:8px;padding:8px 14px;font-size:.82rem;margin:12px 14px 0;font-weight:700;display:inline-block}
+#back-btn:active{background:#dde6f5}
+
+#tabs{display:-webkit-box;display:-webkit-flex;display:flex;border-bottom:3px solid #0033A0;margin:10px 0 0;overflow-x:auto;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none}
+#tabs::-webkit-scrollbar{display:none}
+.tab-btn{background:#e8edf5;border-radius:6px 6px 0 0;padding:9px 12px;font-size:.76rem;color:#0033A0;font-weight:700;white-space:nowrap;border-bottom:3px solid transparent;margin-bottom:-3px;-webkit-flex-shrink:0;flex-shrink:0}
+.tab-btn.active{background:#0033A0;color:#fff;border-bottom-color:#0033A0}
+
+.tab-panel{display:none;padding:16px 14px 10px}
+.tab-panel.active{display:block}
+
+#bottom-nav{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:justify;-webkit-justify-content:space-between;justify-content:space-between;padding:12px 14px;border-top:2px solid #ddd;background:#f9f9f9;margin-top:10px}
+.nav-btn{background:#F2A900;border-radius:8px;padding:10px 16px;font-weight:700;font-size:.82rem}
+.nav-btn:active{background:#d4920a}
+.nav-btn:disabled{background:#ccc;color:#888;cursor:default}
+#tab-indicator{color:#0033A0;font-weight:700;font-size:.8rem}
+
+.nota-mat{background:#fff8e1;border-left:4px solid #F2A900;border-radius:6px;padding:9px 12px;font-size:.78rem;color:#5a4200;margin-bottom:12px;line-height:1.6}
+.nota-mat b{color:#0033A0}
+.grupo-hdr{background:#dde6f5;border-left:4px solid #0033A0;padding:8px 12px;border-radius:8px;font-size:.78rem;color:#0033A0;font-weight:700;margin-bottom:10px;margin-top:8px;line-height:1.5}
+
+.preg-block{background:#fff;border-radius:10px;padding:13px;margin-bottom:11px;-webkit-box-shadow:0 1px 6px rgba(0,0,0,.07);box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.preg-num{color:#F2A900;font-weight:700;font-size:.72rem;margin-bottom:4px}
+.preg-txt{color:#222;font-size:.86rem;margin-bottom:9px;font-weight:600;line-height:1.55}
+.opciones{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;flex-direction:column}
+.opcion{background:#F5F5F5;border:2px solid #ddd;border-radius:8px;padding:9px 12px;font-size:.83rem;color:#333;text-align:left;line-height:1.5;width:100%;margin-bottom:7px;display:block}
+.opcion:active:not(.locked){border-color:#0033A0;background:#eef2f7}
+@media(min-width:769px){.opcion:hover:not(.locked){border-color:#0033A0;background:#eef2f7}}
+.opcion.correct{border-color:#27ae60;background:#d5f5e3;color:#1a7a40;font-weight:700}
+.opcion.wrong{border-color:#c0392b;background:#fde8e4;color:#c0392b}
+.opcion.locked{cursor:default}
+.feedback{font-size:.77rem;margin-top:6px;padding:7px 10px;border-radius:6px;line-height:1.5}
+.feedback.ok{background:#d5f5e3;color:#1a7a40;font-weight:700}
+.feedback.fail{background:#fff3cd;color:#856404}
+#ver-puntaje{background:#0033A0;color:#fff;border-radius:8px;padding:10px 20px;font-weight:700;margin-top:6px;font-size:.86rem}
+#puntaje-sel{font-weight:700;color:#0033A0;margin-top:8px;font-size:.95rem}
+
+.cor-wrap{display:-webkit-box;display:-webkit-flex;display:flex;max-width:780px;margin:0 auto}
+.cor-col{-webkit-box-flex:1;-webkit-flex:1;flex:1;min-width:0;padding-right:6px}
+.cor-col:last-child{padding-right:0;padding-left:6px}
+.cor-col h3{color:#0033A0;font-size:.82rem;font-weight:700;margin-bottom:8px;text-align:center}
+.cor-card{background:#F5F5F5;border:2px solid #ccc;border-radius:8px;padding:9px 10px;font-size:.78rem;color:#333;min-height:52px;line-height:1.4;margin-bottom:8px;word-break:break-word;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-align:center;-webkit-align-items:center;align-items:center;cursor:pointer}
+.cor-card.selected{border-color:#0033A0;background:#dde6f5}
+.cor-card.correct{border-color:#27ae60;background:#d5f5e3;color:#1a7a40;font-weight:700;cursor:default}
+.cor-card.wrong{border-color:#c0392b;background:#fde8e4}
+.cor-card.disabled{cursor:default;opacity:.65}
+#cor-restart{margin-top:12px;background:#0033A0;color:#fff;border-radius:8px;padding:9px 18px;font-weight:700;font-size:.86rem}
+#cor-score{margin-top:8px;font-weight:700;color:#0033A0;font-size:.88rem}
+@media(max-width:480px){.cor-wrap{-webkit-flex-direction:column;flex-direction:column}.cor-col{padding-right:0;padding-left:0;width:100%}}
+
+.anim-wrap{max-width:660px;margin:0 auto}
+#anim-svg{width:100%;display:block;margin:0 auto;border:2px solid #0033A0;border-radius:8px;background:#fff}
+.ctrl-wrap{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin:11px 0;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center}
+.ctrl-grp{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;flex-direction:column;-webkit-box-align:center;-webkit-align-items:center;align-items:center;margin:6px 12px}
+.ctrl-grp label{font-size:.76rem;font-weight:700;color:#0033A0;margin-bottom:4px}
+.ctrl-grp input[type="range"]{width:155px;cursor:pointer;accent-color:#0033A0}
+.ctrl-grp span{font-size:.8rem;color:#333;margin-top:3px}
+.ctrl-grp select{padding:6px 10px;border:2px solid #0033A0;border-radius:8px;font-size:.8rem;background:#fff;color:#0033A0;font-weight:700;-webkit-appearance:none;appearance:none}
+#anim-info{background:#fff;border:2px solid #F2A900;border-radius:8px;padding:10px 12px;margin-top:10px;font-size:.8rem;line-height:1.65}
+#anim-info b{color:#0033A0}
+#anim-restart{background:#0033A0;color:#fff;border-radius:8px;padding:9px 16px;font-weight:700;margin-top:10px;font-size:.86rem}
+
+#fc-wrap{max-width:510px;margin:0 auto;text-align:center}
+#fc-indicator{color:#0033A0;font-weight:700;margin-bottom:4px;font-size:.88rem}
+.fc-scene{width:100%;height:205px;cursor:pointer;margin:14px 0;position:relative}
+.fc-front-face,.fc-back-face{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:14px;padding:16px 18px;display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-orient:vertical;-webkit-box-direction:normal;-webkit-flex-direction:column;flex-direction:column;-webkit-box-align:center;-webkit-align-items:center;align-items:center;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-backface-visibility:hidden;backface-visibility:hidden;-webkit-transition:-webkit-transform .5s ease,opacity .28s;transition:transform .5s ease,opacity .28s}
+.fc-front-face{background:#0033A0;color:#fff}
+.fc-back-face{background:#F2A900;color:#0033A0;font-weight:700}
+.fc-scene.m3d .fc-front-face{-webkit-transform:rotateY(0deg);transform:rotateY(0deg)}
+.fc-scene.m3d .fc-back-face{-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}
+.fc-scene.m3d .fc-inner{width:100%;height:100%;position:relative;-webkit-transform-style:preserve-3d;transform-style:preserve-3d;-webkit-transition:-webkit-transform .5s ease;transition:transform .5s ease}
+.fc-scene.m3d .fc-inner.flipped{-webkit-transform:rotateY(180deg);transform:rotateY(180deg)}
+.fc-scene.mfb .fc-back-face{opacity:0;pointer-events:none}
+.fc-scene.mfb.flipped .fc-front-face{opacity:0}
+.fc-scene.mfb.flipped .fc-back-face{opacity:1;pointer-events:auto}
+.fc-label{font-size:.64rem;opacity:.7;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.fc-text{font-size:.82rem;line-height:1.5;white-space:pre-line;text-align:left;width:100%}
+#fc-hint{color:#777;font-size:.74rem;margin-top:6px}
+#fc-nav{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-box-pack:center;-webkit-justify-content:center;justify-content:center;margin-top:8px}
+.fc-nav-btn{background:#F2A900;border-radius:8px;padding:9px 16px;font-weight:700;font-size:.88rem;margin:0 6px}
+.fc-nav-btn:active{background:#d4920a}
+.fc-nav-btn:disabled{background:#ccc;color:#888;cursor:default}
+
+#res-wrap{max-width:820px;margin:0 auto}
+.metric-grid{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap;margin-bottom:16px}
+.metric-card{background:#fff;border-radius:10px;padding:12px;text-align:center;-webkit-box-shadow:0 1px 6px rgba(0,0,0,.08);box-shadow:0 1px 6px rgba(0,0,0,.08);-webkit-box-flex:1;-webkit-flex:1 1 100px;flex:1 1 100px;min-width:90px;margin:0 5px 10px}
+.metric-card .mval{font-size:1.35rem;font-weight:700;color:#0033A0}
+.metric-card .mlabel{font-size:.68rem;color:#666;margin-top:4px;line-height:1.3}
+.metric-card.global{border-bottom:4px solid #F2A900}
+.metric-card.global .mval{font-size:1.7rem}
+.badge{display:inline-block;border-radius:20px;padding:5px 16px;font-weight:700;font-size:.8rem;margin-bottom:12px}
+.badge.avanzado{background:#27ae60;color:#fff}
+.badge.intermedio{background:#3498db;color:#fff}
+.badge.basico{background:#F2A900;color:#0033A0}
+.res-table{width:100%;border-collapse:collapse;font-size:.78rem;background:#fff;-webkit-box-shadow:0 1px 6px rgba(0,0,0,.08);box-shadow:0 1px 6px rgba(0,0,0,.08);margin-bottom:14px}
+.res-table th{background:#0033A0;color:#fff;padding:8px 10px;text-align:left}
+.res-table td{padding:8px 10px;border-bottom:1px solid #eee;vertical-align:top}
+.dl-btns{display:-webkit-box;display:-webkit-flex;display:flex;-webkit-flex-wrap:wrap;flex-wrap:wrap}
+.dl-btn{background:#0033A0;color:#fff;border-radius:8px;padding:10px 16px;font-weight:700;font-size:.84rem;margin-right:10px;margin-bottom:8px}
+.dl-btn:active{background:#00257a}
+#res-warn{color:#c0392b;font-weight:700;margin-top:8px;font-size:.84rem}
+
+@media(max-width:400px){.t1{font-size:.9rem}.menu-card{min-width:42%;max-width:50%}.fc-scene{height:185px}.fc-text{font-size:.77rem}}
+@media(max-width:480px){.tab-btn{font-size:.7rem;padding:8px 9px}}
+</style>
+</head>
+<body>
+
+<div id="topbar">
+  <div class="t1">Cuaderno Interactivo: Funciones Exponenciales y Logaritmicas</div>
+  <div class="t2">Matematica &middot; 11&deg; ano &middot; MEP Costa Rica 2026</div>
+  <div class="t3">Liceo de Paraiso</div>
+  <div class="t4">Autoria y Edicion:</div>
+  <div class="t5">MSc. Sarita Melissa Cubero Solano &middot; MSc. Miguel Villalta Ramirez</div>
+  <div class="t6">Basado en prompt de INNOVA TEC para Claude (Anthropic, 2026), modificado y validado por los autores.</div>
+</div>
+<div id="infobar">
+  <span class="ib-item"><span class="ib-label">Estudiante:</span><span class="chip" id="chip-nombre">-</span></span>
+  <span class="ib-item"><span class="ib-label">Seccion:</span><span class="chip" id="chip-seccion">-</span></span>
+</div>
+<div id="progbar-wrap"><div id="progbar"></div></div>
+
+<div id="modal-overlay">
+  <div id="modal-box">
+    <div class="lock">&#128274;</div>
+    <h2>Bienvenido al Cuaderno Interactivo</h2>
+    <p>Selecciona tu seccion y escribe tu nombre completo para habilitar el cuaderno.</p>
+    <select id="m-seccion">
+      <option value="">-- Selecciona tu seccion --</option>
+      <option value="11-1">11-1</option><option value="11-2">11-2</option>
+      <option value="11-3">11-3</option><option value="11-4">11-4</option>
+      <option value="11-5">11-5</option><option value="11-6">11-6</option>
+      <option value="11-7">11-7</option><option value="11-8">11-8</option>
+      <option value="11-9">11-9</option><option value="11-10">11-10</option>
+    </select>
+    <input type="text" id="m-nombre" placeholder="Nombre completo del estudiante"
+           autocomplete="name" autocorrect="off" autocapitalize="words" spellcheck="false">
+    <button id="modal-btn">&#10004; Ingresar al cuaderno</button>
+    <div id="modal-warn"></div>
+  </div>
+</div>
+
+<div id="main-menu">
+  <h2>Selecciona una actividad para comenzar</h2>
+  <div id="menu-grid">
+    <div class="menu-card" data-tab="0"><span class="icon">&#128221;</span><div class="title">Seleccion unica <span class="done-badge" id="done0"></span></div><div class="desc">23 items de opcion triple con retroalimentacion</div></div>
+    <div class="menu-card" data-tab="1"><span class="icon">&#128279;</span><div class="title">Correspondencia <span class="done-badge" id="done1"></span></div><div class="desc">5 pares de propiedades logaritmicas</div></div>
+    <div class="menu-card" data-tab="2"><span class="icon">&#128202;</span><div class="title">Explorador grafico <span class="done-badge" id="done2"></span></div><div class="desc">Visualiza funciones exponenciales y logaritmicas</div></div>
+    <div class="menu-card" data-tab="3"><span class="icon">&#127183;</span><div class="title">Fichas de repaso <span class="done-badge" id="done3"></span></div><div class="desc">12 fichas sobre conceptos y procedimientos</div></div>
+    <div class="menu-card" data-tab="4"><span class="icon">&#128203;</span><div class="title">Resultados <span class="done-badge" id="done4"></span></div><div class="desc">Dashboard y descarga de informe</div></div>
+  </div>
+</div>
+
+<div id="activity-area">
+  <button id="back-btn">&#8592; Volver al menu principal</button>
+  <div id="tabs">
+    <button class="tab-btn" data-idx="0">1. Seleccion</button>
+    <button class="tab-btn" data-idx="1">2. Correspondencia</button>
+    <button class="tab-btn" data-idx="2">3. Grafico</button>
+    <button class="tab-btn" data-idx="3">4. Fichas</button>
+    <button class="tab-btn" data-idx="4">5. Resultados</button>
+  </div>
+
+  <div class="tab-panel" id="panel-0">
+    <h3 style="color:#0033A0;margin-bottom:8px;font-size:.96rem;">&#128221; Seleccion Unica &#8212; 23 items</h3>
+    <div class="nota-mat"><b>&#128204; Notacion:</b> <b>log_b(x)</b> = logaritmo de x en base b (b=base, x=argumento). El simbolo <b>^</b> significa <b>potencia o exponente</b>. Ej: 2^4 = "2 elevado a 4" = 16.</div>
+    <div id="preguntas-wrap"></div>
+    <div style="text-align:center;margin-top:10px;">
+      <button id="ver-puntaje">Ver puntaje parcial</button>
+      <div id="puntaje-sel"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-1">
+    <h3 style="color:#0033A0;margin-bottom:8px;font-size:.96rem;">&#128279; Correspondencia &#8212; Propiedades de Logaritmos</h3>
+    <div class="nota-mat"><b>&#128204; Notacion:</b> log_b(x) = logaritmo de x en base b. Ej: log_2(8)=3 porque 2^3=8 (2 elevado a 3 da 8).</div>
+    <p style="font-size:.8rem;color:#555;margin-bottom:12px;">Toca una expresion de la columna izquierda y luego su equivalente en la derecha.</p>
+    <div class="cor-wrap">
+      <div class="cor-col"><h3>Expresion original</h3><div id="cor-left"></div></div>
+      <div class="cor-col"><h3>Forma simplificada</h3><div id="cor-right"></div></div>
+    </div>
+    <div style="text-align:center;margin-top:12px;">
+      <button id="cor-restart">&#128260; Reiniciar</button>
+      <div id="cor-score"></div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-2">
+    <h3 style="color:#0033A0;margin-bottom:8px;font-size:.96rem;">&#128202; Explorador de Funciones</h3>
+    <div class="nota-mat"><b>&#128204; Notacion:</b> f(x)=a^x se lee "a elevado a x" (^=potencia). log_a(x) es el logaritmo de x en base a. Son funciones inversas entre si.</div>
+    <div class="anim-wrap">
+      <svg id="anim-svg" viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="ctrl-wrap">
+        <div class="ctrl-grp">
+          <label for="sl-base">Valor de la base a</label>
+          <input type="range" id="sl-base" min="0.1" max="4" step="0.1" value="2">
+          <span>a = <b id="sl-base-val">2.0</b></span>
+        </div>
+        <div class="ctrl-grp">
+          <label for="sl-tipo">Tipo de funcion</label>
+          <select id="sl-tipo">
+            <option value="exp">Exponencial: f(x) = a^x</option>
+            <option value="log">Logaritmica: f(x) = log_a(x)</option>
+            <option value="ambas">Ambas funciones</option>
+          </select>
+        </div>
+      </div>
+      <div id="anim-info"></div>
+      <button id="anim-restart">&#128260; Reiniciar</button>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-3">
+    <h3 style="color:#0033A0;margin-bottom:8px;font-size:.96rem;">&#127183; Fichas de Repaso &#8212; 12 fichas</h3>
+    <div class="nota-mat"><b>&#128204; Notacion:</b> ^ = potencia/exponente. log_b(x) = logaritmo de x en base b. Toca la ficha para ver la respuesta.</div>
+    <div id="fc-wrap">
+      <div id="fc-indicator"></div>
+      <div class="fc-scene" id="fc-scene">
+        <div class="fc-inner" id="fc-inner">
+          <div class="fc-front-face"><div class="fc-label">CONCEPTO / PREGUNTA</div><div class="fc-text" id="fc-front-text"></div></div>
+          <div class="fc-back-face"><div class="fc-label">RESPUESTA</div><div class="fc-text" id="fc-back-text"></div></div>
+        </div>
+      </div>
+      <div id="fc-hint">Toca la ficha para ver la respuesta &#128070;</div>
+      <div id="fc-nav">
+        <button class="fc-nav-btn" id="fc-prev">&#8592; Anterior</button>
+        <button class="fc-nav-btn" id="fc-next">Siguiente &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-panel" id="panel-4">
+    <h3 style="color:#0033A0;margin-bottom:12px;font-size:.96rem;">&#128203; Dashboard de Evaluacion</h3>
+    <div id="res-wrap"></div>
+  </div>
+
+  <div id="bottom-nav">
+    <button class="nav-btn" id="btn-prev">&#8592; Anterior</button>
+    <span id="tab-indicator">Actividad 1 de 5</span>
+    <button class="nav-btn" id="btn-next">Siguiente &#8594;</button>
+  </div>
+</div>
+
+<script>
+// ── ESTADO GLOBAL ─────────────────────────────────────
+var ST = {
+  name:'', section:'',
+  seleccion:{ done:false, correctCount:0, total:23, details:[], timestamp:null },
+  corresp:{ done:false, correctCount:0, totalAttempts:0, timestamp:null },
+  animacion:{ interacted:false, interactions:0, timestamp:null },
+  flashcards:{ done:false, seen:[], flips:0, timestamp:null }
+};
+var currentTab = 0;
+var visitedTabs = {};
+
+// ── UTILIDADES ────────────────────────────────────────
+function addEv(el, ev, fn) {
+  if (!el) return;
+  if (el.addEventListener) el.addEventListener(ev, fn, false);
+  else if (el.attachEvent) el.attachEvent('on' + ev, fn);
+}
+function trim(s) { return s ? s.replace(/^\s+|\s+$/g, '') : ''; }
+function inArray(arr, val) {
+  for (var i = 0; i < arr.length; i++) { if (arr[i] === val) return true; }
+  return false;
+}
+function shuffleArr(arr) {
+  var a = arr.slice(), i, j, t;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+function getFecha() {
+  var d = new Date();
+  var m = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','setiembre','octubre','noviembre','diciembre'];
+  return d.getDate() + ' de ' + m[d.getMonth()] + ' de ' + d.getFullYear();
+}
+
+// ── MODAL ─────────────────────────────────────────────
+addEv(document.getElementById('modal-btn'), 'click', function() {
+  var sec = trim(document.getElementById('m-seccion').value);
+  var nom = trim(document.getElementById('m-nombre').value);
+  var warn = document.getElementById('modal-warn');
+  if (!sec && !nom) { warn.textContent = 'Por favor selecciona la seccion e ingresa tu nombre.'; return; }
+  if (!sec) { warn.textContent = 'Por favor selecciona tu seccion.'; return; }
+  if (!nom) { warn.textContent = 'Por favor escribe tu nombre completo.'; return; }
+  ST.name = nom; ST.section = sec;
+  document.getElementById('chip-nombre').textContent = nom;
+  document.getElementById('chip-seccion').textContent = sec;
+  document.getElementById('modal-overlay').style.display = 'none';
+  document.getElementById('main-menu').style.display = 'block';
+});
+addEv(document.getElementById('m-nombre'), 'keypress', function(e) {
+  var k = e.keyCode || e.which;
+  if (k === 13) document.getElementById('modal-btn').click();
+});
+
+// ── MENU ──────────────────────────────────────────────
+var menuCards = document.querySelectorAll('.menu-card');
+for (var mc = 0; mc < menuCards.length; mc++) {
+  (function(card) {
+    addEv(card, 'click', function() { showActivity(parseInt(card.getAttribute('data-tab'), 10)); });
+  })(menuCards[mc]);
+}
+addEv(document.getElementById('back-btn'), 'click', function() {
+  document.getElementById('activity-area').style.display = 'none';
+  document.getElementById('main-menu').style.display = 'block';
+  updateMenuDones(); updateProgBar();
+});
+function showActivity(idx) {
+  document.getElementById('main-menu').style.display = 'none';
+  document.getElementById('activity-area').style.display = 'block';
+  switchTab(idx);
+}
+function updateMenuDones() {
+  document.getElementById('done0').textContent = ST.seleccion.done ? ' ✓' : '';
+  document.getElementById('done1').textContent = ST.corresp.done ? ' ✓' : '';
+  document.getElementById('done2').textContent = ST.animacion.interacted ? ' ✓' : '';
+  document.getElementById('done3').textContent = ST.flashcards.done ? ' ✓' : '';
+  document.getElementById('done4').textContent = visitedTabs[4] ? ' ✓' : '';
+}
+function updateProgBar() {
+  var n = 0, k;
+  for (k in visitedTabs) { if (visitedTabs.hasOwnProperty(k) && visitedTabs[k]) n++; }
+  document.getElementById('progbar').style.width = (n / 5 * 100) + '%';
+}
+
+// ── TABS ──────────────────────────────────────────────
+var tabBtns = document.querySelectorAll('.tab-btn');
+var tabPanels = document.querySelectorAll('.tab-panel');
+for (var tb = 0; tb < tabBtns.length; tb++) {
+  (function(btn) {
+    addEv(btn, 'click', function() { switchTab(parseInt(btn.getAttribute('data-idx'), 10)); });
+  })(tabBtns[tb]);
+}
+addEv(document.getElementById('btn-prev'), 'click', function() { if (currentTab > 0) switchTab(currentTab - 1); });
+addEv(document.getElementById('btn-next'), 'click', function() { if (currentTab < 4) switchTab(currentTab + 1); });
+
+function switchTab(idx) {
+  currentTab = idx; visitedTabs[idx] = true;
+  var x;
+  for (x = 0; x < tabBtns.length; x++) tabBtns[x].className = (x === idx) ? 'tab-btn active' : 'tab-btn';
+  for (x = 0; x < tabPanels.length; x++) tabPanels[x].className = (x === idx) ? 'tab-panel active' : 'tab-panel';
+  document.getElementById('tab-indicator').textContent = 'Actividad ' + (idx + 1) + ' de 5';
+  document.getElementById('btn-prev').disabled = (idx === 0);
+  document.getElementById('btn-next').disabled = (idx === 4);
+  if (idx === 4) renderResultados();
+  updateProgBar(); updateMenuDones();
+  try { document.getElementById('activity-area').scrollIntoView({ block: 'start' }); } catch(e) {
+    try { window.scrollTo(0, document.getElementById('activity-area').offsetTop); } catch(e2) {}
+  }
+}
+
+// ── SELECCION UNICA — 23 ITEMS ────────────────────────
+var PREGUNTAS = [
+  { g:'Items 1-4: f(x)=log_b(x) con b>1 — [log_b(x)=logaritmo de x en base b; b=base, x=argumento]',
+    t:'1. La funcion f(x)=log_b(x) con b>1 es',
+    o:['Creciente','Decreciente','Constante'], c:0,
+    p:'Con b>1, al aumentar x tambien aumenta el logaritmo. Compara log_10(10) con log_10(100).' },
+  { g:'',
+    t:'2. Una caracteristica de f(x)=log_b(x) con b>1 es que',
+    o:['Su dominio es solo los reales positivos (R+)','Pasa por el punto (0, 1)','Su ambito es R+'], c:0,
+    p:'El logaritmo no esta definido para cero ni negativos. Que conjunto describe los valores posibles de x?' },
+  { g:'',
+    t:'3. En f(x)=log_b(x) con b>1 se cumple que',
+    o:['f(x)>0 para todo x mayor que 1','f(x)>0 para todo x entre 0 y 1','f(x)=0 para todo x mayor que 1'], c:0,
+    p:'Prueba: log_2(4)=2, positivo, y 4>1. Que ocurre siempre cuando x>1 y b>1?' },
+  { g:'',
+    t:'4. Si f(x)=log_3(x) [base=3, argumento=x] y f(k)=4, entonces k vale',
+    o:['81','64','12'], c:0,
+    p:'log_3(k)=4 significa 3^4=k (3 elevado a la potencia 4 da k). Cuanto es 3 elevado a 4?' },
+  { g:'Items 5-8: f(x)=a^x [^=elevado a la potencia] con f decreciente',
+    t:'5. Para que f(x)=a^x sea decreciente se cumple que',
+    o:['0<a<1 (la base esta entre 0 y 1)','a>1 (la base es mayor que 1)','a<0 (la base es negativa)'], c:0,
+    p:'Comprueba: (1/2)^1=0.5 y (1/2)^2=0.25. La base 1/2 esta entre 0 y 1 y la funcion decrece.' },
+  { g:'',
+    t:'6. El ambito de f(x)=a^x con 0<a<1 es',
+    o:['Todos los reales positivos (R+)','Todos los reales (R)','Todos los reales negativos (R-)'], c:0,
+    p:'Una potencia de base positiva siempre da resultado positivo. Puede a^x dar cero o negativo?' },
+  { g:'',
+    t:'7. La funcion f(x)=a^x con 0<a<1 interseca al eje x',
+    o:['Nunca; tiene asintota horizontal en y=0','En el punto (1, 0)','En el punto (0, 0)'], c:0,
+    p:'a^x siempre es positivo, nunca vale cero. La curva se acerca a y=0 pero no la toca.' },
+  { g:'',
+    t:'8. En f(x)=a^x con 0<a<1 se cumple que',
+    o:['f(x) esta entre 0 y 1 para toda x en ]0,+inf[','f(x)>1 para toda x en ]-inf,0[','f(x)<0 para toda x mayor que 1'], c:0,
+    p:'Si la base<1 y el exponente es positivo, el resultado se acerca a cero. Si es negativo, el resultado supera a 1.' },
+  { g:'Items 9-10: f(x)=3^x [3 elevado a la potencia x]',
+    t:'9. La funcion f(x)=3^x es',
+    o:['Creciente','Decreciente','Constante'], c:0,
+    p:'La base es 3, mayor que 1. Una exponencial con base>1 crece cuando el exponente x aumenta.' },
+  { g:'',
+    t:'10. En f(x)=3^x, cual afirmacion es verdadera?',
+    o:['f(-4)<f(0) es decir 3^(-4)<3^0','f(2)>f(5) es decir 3^2>3^5','f(-1)=f(1) es decir 3^(-1)=3^1'], c:0,
+    p:'La funcion es creciente: a mayor x, mayor f(x). 3^0=1 y 3^(-4) es una fraccion pequena.' },
+  { g:'Items 11-15: Aplicaciones exponenciales [^=potencia/exponente]',
+    t:'11. N(t)=50 * 2^t (50 por 2 elevado a la potencia t, t en horas). Cuantos hongos a t=4?',
+    o:['800','200','1600'], c:0,
+    p:'N(4)=50 * 2^4. Calcula 2^4 (2 elevado a 4) = 2x2x2x2 = 16, luego multiplica por 50.' },
+  { g:'',
+    t:'12. T(h)=300 * (0.8)^h (300 por 0.8 elevado a h, h en horas). Temperatura aproximada a h=5?',
+    o:['98.30 grados','150 grados','240 grados'], c:0,
+    p:'Calcula (0.8)^5 (0.8 elevado a 5) y multiplica por 300. Base 0.8<1 da resultado menor que 300.' },
+  { g:'',
+    t:'13. D(t)=500000 * e^(0.06*t) [e aprox. 2.718; ^=potencia]. Deuda aproximada a t=3 anos?',
+    o:['597452 colones','1500000 colones','530000 colones'], c:0,
+    p:'Calcula e^(0.18) (2.718 elevado a 0.18) con tu calculadora y multiplica por 500000.' },
+  { g:'',
+    t:'14. A(t)=200 * e^(-0.03*t) [e aprox. 2.718; ^=potencia]. Gramos aproximados a t=10 anos?',
+    o:['148.16 gramos','170 gramos','200 gramos'], c:0,
+    p:'A(10)=200 * e^(-0.3). El exponente negativo indica decrecimiento. Calcula e^(-0.3) con calculadora.' },
+  { g:'',
+    t:'15. Q(t)=4 * (2)^t [4 por 2 elevado a t]. A cuantas horas hay 128000 bacterias?',
+    o:['5 horas','4 horas','6 horas'], c:0,
+    p:'Plantea: 128=4 * 2^t. Divide: 32=2^t. A que potencia elevo 2 para obtener 32?' },
+  { g:'Items 16-18: Funcion inversa de la exponencial',
+    t:'16. Si g(x)=7^x (7 elevado a la potencia x), el criterio de g^(-1)(x) es',
+    o:['log_7(x) [logaritmo de x en base 7]','log_x(7) [logaritmo de 7 en base x]','7 * log(x)'], c:0,
+    p:'La inversa de la exponencial base 7 es el logaritmo base 7. Responde: a que potencia elevo 7 para obtener x?' },
+  { g:'',
+    t:'17. Si f(x)=(5)^x (5 elevado a x), entonces f^(-1)(125) equivale a',
+    o:['3','5','25'], c:0,
+    p:'f^(-1)(125)=log_5(125). A que potencia elevo 5 para obtener 125? Comprueba: 5^3=125.' },
+  { g:'',
+    t:'18. Si f(x)=(1/3)^x (la fraccion 1/3 elevada a x), entonces f^(-1)(9) equivale a',
+    o:['-2','2','3'], c:0,
+    p:'Prueba -2: (1/3)^(-2)=3^2=9. El exponente negativo invierte la base.' },
+  { g:'Items 19-23: Definicion de logaritmo y ecuaciones exponenciales',
+    t:'19. La expresion log_m(n)=p [logaritmo de n en base m igual a p] equivale a',
+    o:['m^p=n (m elevado a la potencia p da n)','n^p=m','p^m=n'], c:0,
+    p:'Definicion: log_base(argumento)=exponente equivale a base^exponente=argumento. Entonces log_m(n)=p equivale a m^p=n.' },
+  { g:'',
+    t:'20. Si el punto (3,64) pertenece a f(x)=a^x, que punto pertenece a f^(-1)(x)?',
+    o:['(64, 3)','(3, 64)','(-3, -64)'], c:0,
+    p:'La inversa intercambia coordenadas: si (x,y) esta en f, entonces (y,x) esta en f^(-1).' },
+  { g:'',
+    t:'21. La solucion de 8=2^(3x-3) [2 elevado a la potencia (3x-3)] corresponde a',
+    o:['2','1','3'], c:0,
+    p:'Expresa 8 como potencia de 2: 8=2^3. Iguala exponentes: 3=3x-3. Resuelve para x.' },
+  { g:'',
+    t:'22. La solucion de 5^(2-x)=25 [5 elevado a la potencia (2-x)] corresponde a',
+    o:['0','-2','2'], c:0,
+    p:'Expresa 25=5^2. Iguala: 2-x=2. Cuanto vale x?' },
+  { g:'',
+    t:'23. La solucion de 3^(x+4)=3^(2x) [ambos lados con base 3] corresponde a',
+    o:['4','-4','2'], c:0,
+    p:'Misma base: iguala exponentes directamente: x+4=2x. Resuelve para x.' }
+];
+
+// CONSTRUCCION CORRECTA — sin bugs de closure con opsEl
+(function buildSeleccion() {
+  var wrap = document.getElementById('preguntas-wrap');
+  wrap.innerHTML = '';
+  ST.seleccion.details = []; ST.seleccion.correctCount = 0; ST.seleccion.done = false;
+  var lastG = '';
+  var qi;
+  for (qi = 0; qi < PREGUNTAS.length; qi++) {
+    var p = PREGUNTAS[qi];
+    ST.seleccion.details.push({ enunciado: p.t, seleccionada: null, correcta: false, pista: p.p });
+    if (p.g && p.g !== lastG) {
+      var gd = document.createElement('div');
+      gd.className = 'grupo-hdr'; gd.textContent = p.g;
+      wrap.appendChild(gd); lastG = p.g;
+    }
+    // build shuffled options
+    var rawOps = [];
+    for (var oi = 0; oi < p.o.length; oi++) rawOps.push({ text: p.o[oi], orig: oi });
+    var sOps = shuffleArr(rawOps);
+    var cIdx = 0;
+    for (var ci = 0; ci < sOps.length; ci++) { if (sOps[ci].orig === p.c) { cIdx = ci; break; } }
+
+    var block = document.createElement('div'); block.className = 'preg-block';
+    var numD = document.createElement('div'); numD.className = 'preg-num'; numD.textContent = 'Item ' + (qi + 1) + ' de 23';
+    var txtD = document.createElement('div'); txtD.className = 'preg-txt'; txtD.textContent = p.t;
+    var opsD = document.createElement('div'); opsD.className = 'opciones';
+    var fbD  = document.createElement('div'); fbD.className = 'feedback'; fbD.style.display = 'none';
+    block.appendChild(numD); block.appendChild(txtD); block.appendChild(opsD); block.appendChild(fbD);
+    wrap.appendChild(block);
+
+    // IIFE captura correctamente qI, cI, pst, opsContainer, fb
+    (function(qI, cI, pst, opsArr, opsContainer, fb) {
+      var bi;
+      for (bi = 0; bi < opsArr.length; bi++) {
+        (function(oIdx, isCorrect, txt) {
+          var btn = document.createElement('button');
+          btn.className = 'opcion'; btn.textContent = txt;
+          addEv(btn, 'click', function() {
+            if (btn.className.indexOf('locked') >= 0) return;
+            var allB = opsContainer.querySelectorAll('.opcion');
+            var bx;
+            for (bx = 0; bx < allB.length; bx++) allB[bx].className = 'opcion locked';
+            if (isCorrect) {
+              btn.className = 'opcion correct locked';
+              fb.className = 'feedback ok'; fb.textContent = 'Excelente! Respuesta correcta.';
+              ST.seleccion.correctCount++;
+            } else {
+              btn.className = 'opcion wrong locked';
+              allB[cI].className = 'opcion correct locked';
+              fb.className = 'feedback fail'; fb.textContent = 'Pista: ' + pst;
+            }
+            fb.style.display = 'block';
+            ST.seleccion.details[qI].seleccionada = txt;
+            ST.seleccion.details[qI].correcta = isCorrect;
+            ST.seleccion.done = true; ST.seleccion.timestamp = new Date().toISOString();
+          });
+          opsContainer.appendChild(btn);
+        })(bi, bi === cI, opsArr[bi].text);
+      }
+    })(qi, cIdx, p.p, sOps, opsD, fbD);
+  }
+})();
+
+addEv(document.getElementById('ver-puntaje'), 'click', function() {
+  document.getElementById('puntaje-sel').textContent = 'Puntaje: ' + ST.seleccion.correctCount + '/23';
+});
+
+// ── CORRESPONDENCIA — 5 PARES ─────────────────────────
+var COR = [
+  { izq:'3*log_2(x) + 2*log_2(x^2)  [log base 2; ^=potencia]', der:'log_2(x^7)  [log base 2 de x elevado a 7]' },
+  { izq:'ln(x^2) + ln(y) - ln(z)  [ln=log natural base e; ^=potencia]', der:'ln(x^2 * y / z)  [un solo logaritmo natural]' },
+  { izq:'log(4x^2) - 2*log(x)  [log base 10; ^=potencia]', der:'log(4)  [solo queda la constante]' },
+  { izq:'4*log_3(x) - log_3(x^2)  [log base 3; ^=potencia]', der:'log_3(x^2)  [log base 3 de x al cuadrado]' },
+  { izq:'2*log(x+1) + log(5)  [log base 10]', der:'log(5*(x+1)^2)  [log del producto]' }
+];
+var corState = { leftSel: null, matched: {}, correct: 0 };
+
+function buildCor() {
+  corState = { leftSel: null, matched: {}, correct: 0 };
+  ST.corresp.correctCount = 0; ST.corresp.totalAttempts = 0; ST.corresp.done = false;
+  var sR = shuffleArr((function() {
+    var r = [], ii;
+    for (ii = 0; ii < COR.length; ii++) r.push({ text: COR[ii].der, idx: ii });
+    return r;
+  })());
+  var leftEl = document.getElementById('cor-left');
+  var rightEl = document.getElementById('cor-right');
+  leftEl.innerHTML = ''; rightEl.innerHTML = '';
+
+  var li;
+  for (li = 0; li < COR.length; li++) {
+    (function(idx) {
+      var c = document.createElement('div'); c.className = 'cor-card'; c.textContent = COR[idx].izq;
+      addEv(c, 'click', function() {
+        if (c.className.indexOf('correct') >= 0) return;
+        var all = leftEl.querySelectorAll('.cor-card'), ax;
+        for (ax = 0; ax < all.length; ax++) { if (all[ax].className.indexOf('correct') < 0) all[ax].className = 'cor-card'; }
+        c.className = 'cor-card selected'; corState.leftSel = idx;
+      });
+      leftEl.appendChild(c);
+    })(li);
+  }
+  var ri;
+  for (ri = 0; ri < sR.length; ri++) {
+    (function(item) {
+      var c2 = document.createElement('div'); c2.className = 'cor-card'; c2.textContent = item.text;
+      addEv(c2, 'click', function() {
+        if (corState.leftSel === null || c2.className.indexOf('correct') >= 0) return;
+        ST.corresp.totalAttempts++;
+        var lCards = leftEl.querySelectorAll('.cor-card');
+        var lCard = lCards[corState.leftSel];
+        if (corState.leftSel === item.idx) {
+          corState.correct++; ST.corresp.correctCount++;
+          corState.matched[item.idx] = true;
+          lCard.className = 'cor-card correct disabled'; c2.className = 'cor-card correct disabled';
+          ST.corresp.timestamp = new Date().toISOString();
+          if (corState.correct === 5) { ST.corresp.done = true; document.getElementById('cor-score').textContent = 'Perfecto! Completaste todos los pares.'; }
+          else document.getElementById('cor-score').textContent = 'Pares correctos: ' + corState.correct + '/5';
+        } else {
+          lCard.className = 'cor-card wrong'; c2.className = 'cor-card wrong';
+          setTimeout(function() { lCard.className = 'cor-card'; c2.className = 'cor-card'; }, 900);
+        }
+        corState.leftSel = null;
+      });
+      rightEl.appendChild(c2);
+    })(sR[ri]);
+  }
+  document.getElementById('cor-score').textContent = '';
+}
+buildCor();
+addEv(document.getElementById('cor-restart'), 'click', buildCor);
+
+// ── EXPLORADOR GRAFICO ────────────────────────────────
+function gx(x) { return 60 + x * (360 / 20); }
+function gy(y, rng) { return 240 - y * (380 / (rng * 2)); }
+
+function drawGraph() {
+  var base = parseFloat(document.getElementById('sl-base').value);
+  var tipo = document.getElementById('sl-tipo').value;
+  document.getElementById('sl-base-val').textContent = base.toFixed(1);
+  var svg = document.getElementById('anim-svg');
+  var ns = 'http://www.w3.org/2000/svg';
+  svg.innerHTML = '';
+  var rng = 6, ix, gl, gl2, tx, ty;
+  for (ix = -10; ix <= 10; ix += 2) {
+    gl = document.createElementNS(ns,'line'); gl.setAttribute('x1',gx(ix)); gl.setAttribute('y1',gy(-rng,rng)); gl.setAttribute('x2',gx(ix)); gl.setAttribute('y2',gy(rng,rng)); gl.setAttribute('stroke','#eee'); gl.setAttribute('stroke-width','1'); svg.appendChild(gl);
+    gl2 = document.createElementNS(ns,'line'); gl2.setAttribute('x1',gx(-10)); gl2.setAttribute('y1',gy(ix*(rng/10),rng)); gl2.setAttribute('x2',gx(10)); gl2.setAttribute('y2',gy(ix*(rng/10),rng)); gl2.setAttribute('stroke','#eee'); gl2.setAttribute('stroke-width','1'); svg.appendChild(gl2);
+  }
+  var ax = document.createElementNS(ns,'line'); ax.setAttribute('x1',gx(-10)); ax.setAttribute('y1',gy(0,rng)); ax.setAttribute('x2',gx(10)); ax.setAttribute('y2',gy(0,rng)); ax.setAttribute('stroke','#333'); ax.setAttribute('stroke-width','2'); svg.appendChild(ax);
+  var ay = document.createElementNS(ns,'line'); ay.setAttribute('x1',gx(0)); ay.setAttribute('y1',gy(-rng,rng)); ay.setAttribute('x2',gx(0)); ay.setAttribute('y2',gy(rng,rng)); ay.setAttribute('stroke','#333'); ay.setAttribute('stroke-width','2'); svg.appendChild(ay);
+  for (ix = -4; ix <= 4; ix += 2) {
+    if (ix === 0) continue;
+    tx = document.createElementNS(ns,'text'); tx.setAttribute('x',gx(ix*2.5)); tx.setAttribute('y',gy(0,rng)+14); tx.setAttribute('font-size','10'); tx.setAttribute('text-anchor','middle'); tx.setAttribute('fill','#888'); tx.textContent = ix*2.5; svg.appendChild(tx);
+    ty = document.createElementNS(ns,'text'); ty.setAttribute('x',gx(0)-6); ty.setAttribute('y',gy(ix*rng/4,rng)+4); ty.setAttribute('font-size','10'); ty.setAttribute('text-anchor','end'); ty.setAttribute('fill','#888'); ty.textContent = (ix*rng/4).toFixed(1); svg.appendChild(ty);
+  }
+  var lxt = document.createElementNS(ns,'text'); lxt.setAttribute('x',gx(9.5)); lxt.setAttribute('y',gy(0,rng)-6); lxt.setAttribute('font-size','12'); lxt.setAttribute('fill','#333'); lxt.setAttribute('font-weight','bold'); lxt.textContent = 'x'; svg.appendChild(lxt);
+  var lyt = document.createElementNS(ns,'text'); lyt.setAttribute('x',gx(0)+8); lyt.setAttribute('y',gy(rng*0.95,rng)); lyt.setAttribute('font-size','12'); lyt.setAttribute('fill','#333'); lyt.setAttribute('font-weight','bold'); lyt.textContent = 'y'; svg.appendChild(lyt);
+
+  function drawPath(pts, color, dash) {
+    if (pts.length < 2) return;
+    var d = 'M', first = true, pi;
+    for (pi = 0; pi < pts.length; pi++) { d += (first ? '' : 'L') + pts[pi][0] + ',' + pts[pi][1]; first = false; }
+    var path = document.createElementNS(ns,'path'); path.setAttribute('d',d); path.setAttribute('stroke',color); path.setAttribute('stroke-width','2.5'); path.setAttribute('fill','none');
+    if (dash) path.setAttribute('stroke-dasharray', dash); svg.appendChild(path);
+  }
+
+  var sb = (base <= 0 || base === 1) ? 2 : base;
+  var xi, yi, pts2, pts3;
+  if (tipo === 'exp' || tipo === 'ambas') {
+    pts2 = [];
+    for (xi = -10; xi <= 10; xi += 0.15) {
+      yi = Math.pow(sb, xi);
+      if (yi > -rng && yi < rng) pts2.push([gx(xi), gy(yi, rng)]);
+      else if (pts2.length > 0) { drawPath(pts2,'#0033A0',''); pts2 = []; }
+    }
+    drawPath(pts2,'#0033A0','');
+    var lt = document.createElementNS(ns,'text'); lt.setAttribute('x',gx(-7)); lt.setAttribute('y',gy(Math.min(Math.pow(sb,-7)*1.1,rng-0.3),rng)); lt.setAttribute('font-size','11'); lt.setAttribute('fill','#0033A0'); lt.setAttribute('font-weight','bold'); lt.textContent = 'f(x)='+sb.toFixed(1)+'^x'; svg.appendChild(lt);
+  }
+  if (tipo === 'log' || tipo === 'ambas') {
+    pts3 = [];
+    for (xi = 0.05; xi <= 10; xi += 0.1) {
+      yi = Math.log(xi) / Math.log(sb);
+      if (yi > -rng && yi < rng) pts3.push([gx(xi), gy(yi, rng)]);
+      else if (pts3.length > 0) { drawPath(pts3,'#c0392b',''); pts3 = []; }
+    }
+    drawPath(pts3,'#c0392b','');
+    var lt2 = document.createElementNS(ns,'text'); lt2.setAttribute('x',gx(6.5)); lt2.setAttribute('y',gy(Math.min(Math.log(6.5)/Math.log(sb)+0.4,rng-0.3),rng)); lt2.setAttribute('font-size','11'); lt2.setAttribute('fill','#c0392b'); lt2.setAttribute('font-weight','bold'); lt2.textContent = 'log_'+sb.toFixed(1)+'(x)'; svg.appendChild(lt2);
+  }
+  if (tipo === 'ambas') {
+    var pd = [], xd;
+    for (xd = -6; xd <= 6; xd += 0.5) pd.push([gx(xd), gy(xd, rng)]);
+    drawPath(pd,'#27ae60','5,5');
+    var ld = document.createElementNS(ns,'text'); ld.setAttribute('x',gx(4)); ld.setAttribute('y',gy(5,rng)); ld.setAttribute('font-size','10'); ld.setAttribute('fill','#27ae60'); ld.textContent = 'y=x'; svg.appendChild(ld);
+  }
+
+  var cres = sb > 1 ? 'Creciente (base>1)' : 'Decreciente (0<base<1)';
+  var info = '';
+  if (tipo === 'exp')
+    info = '<b>Exponencial (azul):</b> f(x)='+sb.toFixed(1)+'^x [^=elevado a x] | <b>Comportamiento:</b> '+cres+'<br><b>Dominio:</b> R | <b>Ambito:</b> R+ | <b>Asintota horizontal:</b> y=0 | <b>Punto de paso:</b> (0,1)';
+  else if (tipo === 'log')
+    info = '<b>Logaritmica (roja):</b> f(x)=log_'+sb.toFixed(1)+'(x) [base='+sb.toFixed(1)+', argumento=x] | <b>Comportamiento:</b> '+cres+'<br><b>Dominio:</b> R+ | <b>Ambito:</b> R | <b>Asintota vertical:</b> x=0 | <b>Punto de paso:</b> (1,0)';
+  else
+    info = '<b>Exponencial (azul):</b> f(x)='+sb.toFixed(1)+'^x [^=potencia] | <b>Logaritmica (roja):</b> log_'+sb.toFixed(1)+'(x) [base='+sb.toFixed(1)+']<br><b>Funciones inversas:</b> simetricas respecto a y=x (verde punteado). El punto (0,1) de la exponencial corresponde a (1,0) de la logaritmica.';
+  document.getElementById('anim-info').innerHTML = info;
+}
+
+function onAnimChange() {
+  ST.animacion.interacted = true; ST.animacion.interactions++;
+  ST.animacion.timestamp = new Date().toISOString(); drawGraph();
+}
+addEv(document.getElementById('sl-base'), 'input', onAnimChange);
+addEv(document.getElementById('sl-base'), 'change', onAnimChange);
+addEv(document.getElementById('sl-tipo'), 'change', onAnimChange);
+addEv(document.getElementById('anim-restart'), 'click', function() {
+  document.getElementById('sl-base').value = 2; document.getElementById('sl-tipo').value = 'exp'; drawGraph();
+});
+drawGraph();
+
+// ── FLASHCARDS — 12 FICHAS ────────────────────────────
+var has3D = (function() {
+  try { var el = document.createElement('div'); el.style.cssText = '-webkit-transform:rotateY(180deg);transform:rotateY(180deg);'; return !!(el.style.transform || el.style.webkitTransform); } catch(e) { return false; }
+})();
+var fcScene = document.getElementById('fc-scene');
+var fcInner = document.getElementById('fc-inner');
+fcScene.className = 'fc-scene ' + (has3D ? 'm3d' : 'mfb');
+
+var FICHAS = [
+  { f:'Que es una funcion exponencial?',
+    b:'f(x) = a^x  (a elevado a la potencia x)\ndonde a > 0 y a distinto de 1.\nDominio: R  |  Ambito: R+\nSiempre pasa por el punto (0, 1)\nporque a^0 = 1 para cualquier base a valida.' },
+  { f:'Cuando es creciente y cuando decreciente f(x) = a^x?',
+    b:'Creciente si a > 1: al aumentar x, a^x aumenta.\nDecreciente si 0 < a < 1: al aumentar x, a^x disminuye.\n\nEj. creciente: 2^3 = 8 < 2^5 = 32\nEj. decreciente: (1/2)^1 = 0.5 > (1/2)^2 = 0.25' },
+  { f:'Que es la funcion logaritmica?',
+    b:'f(x) = log_b(x)  [logaritmo de x en base b]\ndonde b > 0 y b distinto de 1, con x > 0.\nDominio: R+  |  Ambito: R\nSiempre pasa por el punto (1, 0)\nporque log_b(1) = 0 para cualquier base b.' },
+  { f:'Cual es la relacion entre la exponencial y la logaritmica?',
+    b:'Son funciones INVERSAS entre si:\nSi f(x) = a^x, entonces f^(-1)(x) = log_a(x)\n[f^(-1) responde: a que potencia elevo a para obtener x?]\nSon simetricas respecto a la recta y = x.\nIntercambian dominio y ambito entre si.' },
+  { f:'Propiedad del PRODUCTO de logaritmos',
+    b:'log_b(m * n) = log_b(m) + log_b(n)\n[log del producto = suma de los log]\nEjemplo:\nlog_2(8 * 4) = log_2(8) + log_2(4) = 3 + 2 = 5\nComprobacion: 2^5 = 32 = 8 * 4  Correcto.' },
+  { f:'Propiedad del COCIENTE de logaritmos',
+    b:'log_b(m / n) = log_b(m) - log_b(n)\n[log del cociente = resta de los log]\nEjemplo:\nlog_3(81 / 3) = log_3(81) - log_3(3) = 4 - 1 = 3\nComprobacion: 3^3 = 27 = 81/3  Correcto.' },
+  { f:'Propiedad de la POTENCIA de logaritmos',
+    b:'log_b(m^n) = n * log_b(m)\n[log de una potencia = exponente por log]\nEjemplo:\nlog_5(25^3) = 3 * log_5(25) = 3 * 2 = 6\nComprobacion: 5^6 = 15625 = 25^3  Correcto.' },
+  { f:'Como se resuelve una ecuacion exponencial con bases IGUALES?\nEj: 4^(x+1) = 4^(2x-3)',
+    b:'Si a^f(x) = a^g(x) con la misma base a,\niguala los exponentes: f(x) = g(x)\n\nEjemplo: 4^(x+1) = 4^(2x-3)\nIguala: x + 1 = 2x - 3\n4 = x  -->  Solucion: x = 4' },
+  { f:'Como se resuelve una ecuacion exponencial con bases DISTINTAS?\nEj: 5^x = 12',
+    b:'Aplica logaritmo a ambos lados:\nlog(5^x) = log(12)\nx * log(5) = log(12)  [prop. de potencia]\nx = log(12) / log(5)\nx aprox. 1.544' },
+  { f:'Ecuacion logaritmica — Ejemplo resuelto:\nlog_2(x) + log_2(x-2) = 3  [log en base 2]',
+    b:'Unir con prop. de producto:\nlog_2(x * (x-2)) = 3\nDefinicion [2^3 = argumento]:\nx * (x-2) = 8\nx^2 - 2x - 8 = 0\n(x-4) * (x+2) = 0\nx = 4  (x=-2 se descarta: argumento debe ser > 0)' },
+  { f:'Cual es la asintota de la funcion exponencial f(x) = a^x?',
+    b:'La asintota horizontal es y = 0 (el eje x).\nLa curva se acerca pero NUNCA toca esta recta.\n\nSi a > 1: se acerca a y=0 por la izquierda\n(cuando x tiende a -infinito)\nSi 0 < a < 1: se acerca por la derecha\n(cuando x tiende a +infinito)' },
+  { f:'Aplicacion — Modelo con e:\nP(t) = 1200 * e^(0.04*t)\n[e aprox. 2.718; ^ = potencia; t en anos]',
+    b:'Cuantos individuos habra en 5 anos?\nSustituye t = 5:\nP(5) = 1200 * e^(0.04 * 5)\n     = 1200 * e^(0.2)\n     aprox. 1200 * 1.2214\n     aprox. 1465 individuos\n(usa la tecla e^x de tu calculadora cientifica)' }
+];
+
+var fcIdx = 0;
+var fcFlipped = false;
+
+function renderFC() {
+  document.getElementById('fc-indicator').textContent = 'Ficha ' + (fcIdx + 1) + ' de ' + FICHAS.length;
+  document.getElementById('fc-front-text').textContent = FICHAS[fcIdx].f;
+  document.getElementById('fc-back-text').textContent  = FICHAS[fcIdx].b;
+  fcFlipped = false;
+  if (has3D) fcInner.className = 'fc-inner';
+  else fcScene.className = 'fc-scene mfb';
+  document.getElementById('fc-prev').disabled = (fcIdx === 0);
+  document.getElementById('fc-next').disabled = (fcIdx === FICHAS.length - 1);
+}
+addEv(fcScene, 'click', function() {
+  fcFlipped = !fcFlipped;
+  if (has3D) fcInner.className = fcFlipped ? 'fc-inner flipped' : 'fc-inner';
+  else fcScene.className = fcFlipped ? 'fc-scene mfb flipped' : 'fc-scene mfb';
+  if (!inArray(ST.flashcards.seen, fcIdx)) ST.flashcards.seen.push(fcIdx);
+  ST.flashcards.flips++;
+  if (ST.flashcards.seen.length === FICHAS.length) ST.flashcards.done = true;
+  ST.flashcards.timestamp = new Date().toISOString();
+});
+addEv(document.getElementById('fc-prev'), 'click', function() { if (fcIdx > 0) { fcIdx--; renderFC(); } });
+addEv(document.getElementById('fc-next'), 'click', function() { if (fcIdx < FICHAS.length - 1) { fcIdx++; renderFC(); } });
+renderFC();
+
+// ── RESULTADOS ────────────────────────────────────────
+function calcScore() {
+  var s = 0;
+  s += (ST.seleccion.correctCount / 23) * 50;
+  s += (ST.corresp.correctCount / 5) * 20;
+  s += ST.animacion.interacted ? 10 : 0;
+  s += (ST.flashcards.seen.length / 12) * 20;
+  return Math.round(s);
+}
+function getNivel(s) {
+  if (s >= 80) return { label: 'Avanzado', cls: 'avanzado' };
+  if (s >= 50) return { label: 'Intermedio', cls: 'intermedio' };
+  return { label: 'Basico', cls: 'basico' };
+}
+
+function renderResultados() {
+  var sc = calcScore(), niv = getNivel(sc);
+  var sP = Math.round((ST.seleccion.correctCount / 23) * 50);
+  var cP = Math.round((ST.corresp.correctCount / 5) * 20);
+  var aP = ST.animacion.interacted ? 10 : 0;
+  var fP = Math.round((ST.flashcards.seen.length / 12) * 20);
+  var w = document.getElementById('res-wrap');
+  w.innerHTML =
+    '<div class="metric-grid">' +
+    '<div class="metric-card"><div class="mval">' + ST.seleccion.correctCount + '/23</div><div class="mlabel">Correctas Seleccion</div></div>' +
+    '<div class="metric-card"><div class="mval">' + ST.corresp.correctCount + '/5</div><div class="mlabel">Pares Correspondencia</div></div>' +
+    '<div class="metric-card"><div class="mval">' + (ST.animacion.interacted ? '&#10003;' : '&#10007;') + '</div><div class="mlabel">Explorador grafico</div></div>' +
+    '<div class="metric-card"><div class="mval">' + ST.flashcards.seen.length + '/12</div><div class="mlabel">Fichas vistas</div></div>' +
+    '<div class="metric-card global"><div class="mval">' + sc + '/100</div><div class="mlabel">Puntaje global</div></div>' +
+    '</div>' +
+    '<div style="text-align:center;margin-bottom:12px;"><span class="badge ' + niv.cls + '">Nivel: ' + niv.label + '</span></div>' +
+    '<div style="overflow-x:auto;">' +
+    '<table class="res-table"><thead><tr><th>Actividad</th><th>Resultado</th><th>Puntaje</th></tr></thead><tbody>' +
+    '<tr><td>Seleccion unica</td><td>' + ST.seleccion.correctCount + '/23</td><td>' + sP + '/50</td></tr>' +
+    '<tr><td>Correspondencia</td><td>' + ST.corresp.correctCount + '/5 pares</td><td>' + cP + '/20</td></tr>' +
+    '<tr><td>Explorador grafico</td><td>' + (ST.animacion.interacted ? 'Interactuo (' + ST.animacion.interactions + ')' : 'Pendiente') + '</td><td>' + aP + '/10</td></tr>' +
+    '<tr><td>Fichas de repaso</td><td>' + ST.flashcards.seen.length + '/12</td><td>' + fP + '/20</td></tr>' +
+    '</tbody></table></div>' +
+    '<div class="dl-btns" style="margin-top:14px;">' +
+    '<button class="dl-btn" id="dl-pdf">&#11015; Informe PDF</button>' +
+    '<button class="dl-btn" id="dl-excel">&#11015; Informe Excel</button>' +
+    '</div><div id="res-warn"></div>';
+  addEv(document.getElementById('dl-pdf'),   'click', dlPDF);
+  addEv(document.getElementById('dl-excel'), 'click', dlExcel);
+}
+
+// ── DESCARGA PDF ──────────────────────────────────────
+function dlPDF() {
+  var wE = document.getElementById('res-warn');
+  if (!ST.name) { wE.textContent = 'No hay nombre registrado. Ingresa tu nombre en la pantalla inicial.'; return; }
+  var sc = calcScore(), niv = getNivel(sc), fecha = getFecha(), aP = ST.animacion.interacted ? 10 : 0;
+  var dS = '';
+  if (ST.seleccion.details.length > 0) {
+    dS = '<h3 style="color:#0033A0;margin:16px 0 8px;">Detalle Seleccion Unica</h3>' +
+      '<table style="width:100%;border-collapse:collapse;font-size:.74rem;"><thead><tr style="background:#0033A0;color:#fff;">' +
+      '<th style="padding:5px;">N</th><th style="padding:5px;">Item</th><th style="padding:5px;">Respuesta</th><th style="padding:5px;">Correcta</th><th style="padding:5px;">Pista</th>' +
+      '</tr></thead><tbody>';
+    var di;
+    for (di = 0; di < ST.seleccion.details.length; di++) {
+      var d = ST.seleccion.details[di];
+      dS += '<tr style="border-bottom:1px solid #eee;"><td style="padding:4px;text-align:center;">' + (di+1) + '</td><td style="padding:4px;">' + d.enunciado + '</td><td style="padding:4px;">' + (d.seleccionada || '-') + '</td><td style="padding:4px;text-align:center;">' + (d.correcta ? 'Si' : 'No') + '</td><td style="padding:4px;">' + d.pista + '</td></tr>';
+    }
+    dS += '</tbody></table>';
+  }
+  var html = '<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Informe</title>' +
+    '<style>body{font-family:Arial,sans-serif;padding:20px;max-width:820px;margin:0 auto;}h1,h2{color:#0033A0;}' +
+    '.box{background:#0033A0;color:#F2A900;padding:16px;border-radius:10px;text-align:center;font-size:1.9rem;font-weight:700;margin:12px 0;}' +
+    '.badge{display:inline-block;padding:4px 14px;border-radius:20px;font-weight:700;}' +
+    '.avanzado{background:#27ae60;color:#fff;}.intermedio{background:#3498db;color:#fff;}.basico{background:#F2A900;color:#0033A0;}' +
+    'table{width:100%;border-collapse:collapse;}th{background:#0033A0;color:#fff;padding:6px;}td{padding:6px;border-bottom:1px solid #eee;}' +
+    '@media print{button{display:none;}}</style></head><body>' +
+    '<h1>Informe de Evaluacion</h1>' +
+    '<p><b>Estudiante:</b> ' + ST.name + '</p><p><b>Seccion:</b> ' + ST.section + '</p>' +
+    '<p><b>Institucion:</b> Liceo de Paraiso</p>' +
+    '<p><b>Materia:</b> Matematica — Funciones Exponenciales y Logaritmicas</p>' +
+    '<p><b>Fecha:</b> ' + fecha + '</p>' +
+    '<div class="box">' + sc + ' / 100</div>' +
+    '<div style="text-align:center;margin-bottom:12px;"><span class="badge ' + niv.cls + '">Nivel: ' + niv.label + '</span></div>' +
+    '<h2>Resumen</h2><table><thead><tr><th>Actividad</th><th>Resultado</th><th>Puntaje</th></tr></thead><tbody>' +
+    '<tr><td>Seleccion unica</td><td>' + ST.seleccion.correctCount + '/23</td><td>' + Math.round((ST.seleccion.correctCount/23)*50) + '/50</td></tr>' +
+    '<tr><td>Correspondencia</td><td>' + ST.corresp.correctCount + '/5</td><td>' + Math.round((ST.corresp.correctCount/5)*20) + '/20</td></tr>' +
+    '<tr><td>Explorador grafico</td><td>' + (ST.animacion.interacted ? 'Interactuo' : 'Pendiente') + '</td><td>' + aP + '/10</td></tr>' +
+    '<tr><td>Fichas de repaso</td><td>' + ST.flashcards.seen.length + '/12</td><td>' + Math.round((ST.flashcards.seen.length/12)*20) + '/20</td></tr>' +
+    '</tbody></table>' + dS +
+    '<p style="margin-top:24px;font-size:.7rem;color:#999;font-style:italic;">Generado automaticamente por el Cuaderno Interactivo de Funciones Exponenciales y Logaritmicas — Liceo de Paraiso. Plan Remedial 2026.</p>' +
+    '<scr' + 'ipt>setTimeout(function(){window.print();},700);<\/scr' + 'ipt></body></html>';
+  var pw = window.open('', '_blank');
+  if (pw) { pw.document.write(html); pw.document.close(); }
+  else {
+    try { var b = new Blob([html], { type:'text/html' }); var u = URL.createObjectURL(b); var la = document.createElement('a'); la.href = u; la.target = '_blank'; la.click(); setTimeout(function() { URL.revokeObjectURL(u); }, 2000); }
+    catch(e) { alert('Permite ventanas emergentes en tu navegador e intenta nuevamente.'); }
+  }
+}
+
+// ── DESCARGA EXCEL ────────────────────────────────────
+function dlExcel() {
+  var wE = document.getElementById('res-warn');
+  if (!ST.name) { wE.textContent = 'No hay nombre registrado. Ingresa tu nombre en la pantalla inicial.'; return; }
+  var sc = calcScore(), niv = getNivel(sc), fecha = getFecha();
+  function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  var HB = '<Cell ss:StyleID="h"><Data ss:Type="String">', HE = '</Data></Cell>';
+  var NB = '<Cell><Data ss:Type="String">', NE = '</Data></Cell>';
+  var NNB = '<Cell><Data ss:Type="Number">', NNE = '</Data></Cell>';
+
+  var h1 = '<Worksheet ss:Name="Resumen"><Table>' +
+    '<Row>' + HB + 'INFORME — FUNCIONES EXPONENCIALES Y LOGARITMICAS' + HE + '</Row>' +
+    '<Row>' + HB + 'Estudiante' + HE + NB + esc(ST.name) + NE + '</Row>' +
+    '<Row>' + HB + 'Seccion' + HE + NB + esc(ST.section) + NE + '</Row>' +
+    '<Row>' + HB + 'Institucion' + HE + NB + 'Liceo de Paraiso' + NE + '</Row>' +
+    '<Row>' + HB + 'Materia' + HE + NB + 'Matematica — Funciones Exponenciales y Logaritmicas' + NE + '</Row>' +
+    '<Row>' + HB + 'Fecha' + HE + NB + esc(fecha) + NE + '</Row>' +
+    '<Row>' + HB + 'Puntaje global' + HE + NNB + sc + NNE + '</Row>' +
+    '<Row>' + HB + 'Nivel' + HE + NB + niv.label + NE + '</Row>' +
+    '<Row></Row>' +
+    '<Row>' + HB + 'Actividad' + HE + HB + 'Resultado' + HE + HB + 'Puntaje parcial' + HE + '</Row>' +
+    '<Row>' + NB + 'Seleccion unica' + NE + NB + ST.seleccion.correctCount + '/23' + NE + NNB + Math.round((ST.seleccion.correctCount/23)*50) + NNE + '</Row>' +
+    '<Row>' + NB + 'Correspondencia' + NE + NB + ST.corresp.correctCount + '/5' + NE + NNB + Math.round((ST.corresp.correctCount/5)*20) + NNE + '</Row>' +
+    '<Row>' + NB + 'Explorador grafico' + NE + NB + (ST.animacion.interacted ? 'Interactuo' : 'Pendiente') + NE + NNB + (ST.animacion.interacted ? 10 : 0) + NNE + '</Row>' +
+    '<Row>' + NB + 'Fichas de repaso' + NE + NB + ST.flashcards.seen.length + '/12' + NE + NNB + Math.round((ST.flashcards.seen.length/12)*20) + NNE + '</Row>' +
+    '<Row></Row><Row>' + NB + 'Generado automaticamente — Liceo de Paraiso. Plan Remedial 2026.' + NE + '</Row>' +
+    '</Table></Worksheet>';
+
+  var h2r = '', ii2;
+  for (ii2 = 0; ii2 < ST.seleccion.details.length; ii2++) {
+    var dd = ST.seleccion.details[ii2];
+    h2r += '<Row>' + NNB+(ii2+1)+NNE + NB+esc(dd.enunciado)+NE + NB+esc(dd.seleccionada||'Sin respuesta')+NE + NB+(dd.correcta?'Si':'No')+NE + NB+esc(dd.pista)+NE + '</Row>';
+  }
+  var h2 = '<Worksheet ss:Name="Detalle Seleccion"><Table>' +
+    '<Row>' + HB+'N'+HE + HB+'Item'+HE + HB+'Respuesta seleccionada'+HE + HB+'Correcta?'+HE + HB+'Pista orientadora'+HE + '</Row>' +
+    h2r + '</Table></Worksheet>';
+
+  var h3r = '', ii3;
+  for (ii3 = 0; ii3 < FICHAS.length; ii3++) {
+    h3r += '<Row>' + NNB+(ii3+1)+NNE + NB+esc(FICHAS[ii3].f)+NE + NB+(inArray(ST.flashcards.seen,ii3)?'Si':'No')+NE + '</Row>';
+  }
+  var h3 = '<Worksheet ss:Name="Detalle Fichas"><Table>' +
+    '<Row>' + HB+'N Ficha'+HE + HB+'Concepto'+HE + HB+'Vio el reverso?'+HE + '</Row>' +
+    h3r + '</Table></Worksheet>';
+
+  var h4 = '<Worksheet ss:Name="Nivel alcanzado"><Table>' +
+    '<Row>' + HB+'Puntaje'+HE + NNB+sc+NNE + '</Row>' +
+    '<Row>' + HB+'Nivel'+HE + NB+niv.label+NE + '</Row>' +
+    '<Row>' + HB+'Descripcion'+HE + NB+(sc>=80?'Domina los contenidos de Funciones Exponenciales y Logaritmicas.':sc>=50?'Comprende conceptos basicos con areas de mejora.':'Requiere refuerzo en la mayoria de los contenidos.')+NE + '</Row>' +
+    '<Row></Row><Row>' + HB+'Escala de niveles'+HE + '</Row>' +
+    '<Row>' + NB+'80 a 100 puntos'+NE + NB+'Avanzado'+NE + '</Row>' +
+    '<Row>' + NB+'50 a 79 puntos'+NE + NB+'Intermedio'+NE + '</Row>' +
+    '<Row>' + NB+'0 a 49 puntos'+NE + NB+'Basico'+NE + '</Row>' +
+    '</Table></Worksheet>';
+
+  var xml = '<?xml version="1.0" encoding="UTF-8"?><?mso-application progid="Excel.Sheet"?>' +
+    '<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet">' +
+    '<Styles><Style ss:ID="h"><Font ss:Bold="1" ss:Color="#FFFFFF"/><Interior ss:Color="#0033A0" ss:Pattern="Solid"/></Style></Styles>' +
+    h1 + h2 + h3 + h4 + '</Workbook>';
+
+  var sN = ST.name.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_\-]/g,'');
+  var sS = ST.section.replace(/[^a-zA-Z0-9\-]/g,'');
+  var fname = 'Informe_' + sN + '_Secc' + sS + '.xls';
+
+  try {
+    var blob = new Blob([xml], { type:'application/vnd.ms-excel;charset=utf-8' });
+    if (window.navigator && window.navigator.msSaveBlob) { window.navigator.msSaveBlob(blob, fname); }
+    else {
+      var url = URL.createObjectURL(blob);
+      var la = document.createElement('a'); la.href = url; la.download = fname; la.style.display = 'none';
+      document.body.appendChild(la); la.click();
+      setTimeout(function() { URL.revokeObjectURL(url); document.body.removeChild(la); }, 1500);
+    }
+  } catch(e) {
+    try {
+      var dU = 'data:application/vnd.ms-excel;charset=utf-8,' + encodeURIComponent(xml);
+      var la2 = document.createElement('a'); la2.href = dU; la2.download = fname; la2.style.display = 'none';
+      document.body.appendChild(la2); la2.click();
+      setTimeout(function() { document.body.removeChild(la2); }, 1500);
+    } catch(e2) { alert('Tu navegador no permite descargar directamente. Usa el informe PDF.'); }
+  }
+}
+</script>
+</body>
+</html>
